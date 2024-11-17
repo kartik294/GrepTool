@@ -12,24 +12,19 @@ impl Grep {
         for mat in regex.find_iter(line) {
             let (start, end) = (mat.start(), mat.end());
 
-            // Write the text before the match
             write!(stdout, "{}", &line[last_end..start]).unwrap();
 
-            // Set color for the match
             stdout
                 .set_color(ColorSpec::new().set_fg(Some(Color::Red)).set_bold(true))
                 .unwrap();
 
-            // Write the matched text
             write!(stdout, "{}", &line[start..end]).unwrap();
 
-            // Reset to default color
             stdout.reset().unwrap();
 
             last_end = end;
         }
 
-        // Write the remaining text after the last match
         write!(stdout, "{}", &line[last_end..]).unwrap();
     }
 
@@ -44,7 +39,7 @@ impl Grep {
             let line = line.unwrap();
             if regex.is_match(&line) {
                 self.highlight(&line, &regex, &mut stdout);
-                writeln!(stdout).unwrap(); // Ensure newline after each highlighted line
+                writeln!(stdout).unwrap();
             }
         }
     }
